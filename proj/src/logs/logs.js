@@ -20,14 +20,14 @@ const openUrl = (url) => {
 };
 
 const $ = (selector) => {
-    return new Element(selector);  
+    return new ElementFinder(selector);  
 };
 
 const $$ = (selector) => {
-    return new ElementArray(selector);  
+    return new ElementArrayFinder(selector);  
 };
 
-class ElementArray {
+class ElementArrayFinder {
     constructor(selector){
         this.selector = selector;
         this.elementArray = protractor.$$(selector);
@@ -38,7 +38,7 @@ class ElementArray {
     };
 };
 
-class Element {
+class ElementFinder {
     constructor(selector){
         this.element = protractor.$(selector);
     };
@@ -86,4 +86,4 @@ const saveLogs = () => {
     });
 };
 
-module.exports = { $, $$, openUrl, saveLogs, Element, ElementArray };
+module.exports = { $, $$, openUrl, saveLogs, ElementFinder, ElementArrayFinder };

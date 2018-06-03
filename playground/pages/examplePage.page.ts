@@ -1,11 +1,11 @@
 import { promise } from 'protractor';
-import { openUrl, Element, ElementArray, $, $$ } from 'protractor-logs';
+import { openUrl, ElementFinder, ElementArrayFinder, $, $$ } from 'protractor-logs';
 
 export class HomePage {
     public url: string;
-    public nameInput: Element;
-    public greeting: ElementArray;
-    public elemencik: Element;
+    public nameInput: ElementFinder;
+    public greeting: ElementArrayFinder;
+    public elemencik: ElementFinder;
 
     constructor() {
         this.url = 'https://angularjs.org/';
