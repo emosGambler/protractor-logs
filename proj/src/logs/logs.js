@@ -4,14 +4,18 @@ var fs = require('fs');
 
 let logs = { actions: [] };
 
-const openUrl = (url) => {
+const addLogs = (action, value, x, y) => {
     logs['actions'].push({ 
         time: new Date(), 
-        action: 'URL opened', 
-        value: url,
-        x: null,
-        y: null
+        action: action, 
+        value: value,
+        x: x,
+        y: y
     });
+};
+
+const openUrl = (url) => {
+    addLogs('URL opened', url, null, null);
     return protractor.browser.get(url);
 };
 
@@ -19,22 +23,59 @@ const $ = (selector) => {
     return new Element(selector);  
 };
 
+const $$ = (selector) => {
+    return new ElementArray(selector);  
+};
+
+class ElementArray {
+    constructor(selector){
+        this.selector = selector;
+        this.elementArray = protractor.$$(selector);
+    };
+
+    get(index) {
+        return this.elementArray.get(index);
+    };
+};
+
 class Element {
     constructor(selector){
         this.element = protractor.$(selector);
     };
 
+    clear() {
+        this.element.getLocation().then(location => {
+            addLogs('Element input cleaned', null, location.x, location.y);
+        });
+        return this.element.clear();
+    };
+
     click() {
         this.element.getLocation().then(location => {
-            logs['actions'].push({ 
-                time: new Date(), 
-                action: 'Element clicked', 
-                value: null,
-                x: location.x,
-                y: location.y
-            });
+            addLogs('Element clicked', null, location.x, location.y);
         });
         return this.element.click();
+    };
+
+    getAttribute(attribute) {
+        this.element.getLocation().then(location => {
+            addLogs('Reading element attribute', attribute, location.x, location.y);
+        });
+        return this.element.getAttribute(attribute);
+    };
+
+    getText() {
+        this.element.getLocation().then(location => {
+            addLogs('Reading element inner text', null, location.x, location.y);
+        });
+        return this.element.getText();
+    };
+
+    sendKeys(query) {
+        this.element.getLocation().then(location => {
+            addLogs('Keys entered to element', query, location.x, location.y);
+        });
+        return this.element.sendKeys(query);
     };
 };
 
@@ -45,4 +86,4 @@ const saveLogs = () => {
     });
 };
 
-module.exports = { $, openUrl, saveLogs, Element };
+module.exports = { $, $$, openUrl, saveLogs, Element, ElementArray };

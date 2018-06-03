@@ -5,29 +5,27 @@ import * as using from 'jasmine-data-provider';
 
 const homePage: HomePage = new HomePage();
 
-//using(namesData, (name: string) => {
-    describe('The Basics - greetings', () => {
-        beforeAll(() => {
-            homePage.open();
-        });
-        
-        it('should open home page', () => {
-            expect(browser.getCurrentUrl()).toEqual(homePage.url);
-        });
-        
-        it('should type name', () => {
-            homePage.setName('name');
-            expect(homePage.getName()).toEqual('name');
-        });
-        
-        it('should update greetings', () => {
-            expect(homePage.getGreetings()).toEqual(`Hello name!`);
-        });
-
-        it('should not fail', () => {
-            homePage.open();
-            homePage.clickGooglePlusicon();
-            expect(browser.driver.getCurrentUrl()).toContain('plus.google.com');
-        });
+describe('The Basics - greetings', () => {
+    beforeAll(() => {
+        homePage.open();
     });
-//});
+    
+    it('should open home page', () => {
+        expect(browser.getCurrentUrl()).toEqual(homePage.url);
+    });
+
+    it('should type name', () => {
+        homePage.setName('name');
+        expect(homePage.getName()).toEqual('name');
+    });
+    
+    it('should update greetings', () => {
+        expect(homePage.getGreetings()).toEqual('Hello name!');
+    });
+
+    it('should not fail', () => {
+        homePage.open();
+        homePage.clickGooglePlusicon();
+        expect(browser.driver.getCurrentUrl()).toContain('plus.google.com');
+    });
+});

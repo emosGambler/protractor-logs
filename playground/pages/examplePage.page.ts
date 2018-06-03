@@ -1,20 +1,18 @@
-import { $$, element, by, promise, ElementFinder } from 'protractor';
-import { openUrl, Element, $ } from 'protractor-logs';
+import { promise } from 'protractor';
+import { openUrl, Element, ElementArray, $, $$ } from 'protractor-logs';
 
 export class HomePage {
     public url: string;
-    private container: ElementFinder;
-    public nameInput: ElementFinder;
-    public greeting: ElementFinder;
+    public nameInput: Element;
+    public greeting: ElementArray;
     public elemencik: Element;
 
     constructor() {
         this.url = 'https://angularjs.org/';
-        this.container = $$('.container').get(3);
 
         this.elemencik = $('img[src="https://ssl.gstatic.com/images/icons/gplus-32.png"]');
-        this.greeting = this.container.$('div > h1');
-        this.nameInput = this.container.$('input[placeholder="Enter a name here"]');
+        this.greeting = $$('div > h1').get(1);
+        this.nameInput = $('input[placeholder="Enter a name here"]');
     }
 
     public clickGooglePlusicon(): void {
@@ -29,7 +27,6 @@ export class HomePage {
         this.nameInput.clear();
         this.nameInput.sendKeys(userName);
     };
-
 
     public getName(): promise.Promise<string> {
         return this.nameInput.getAttribute('value');
