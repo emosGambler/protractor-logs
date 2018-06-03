@@ -1,4 +1,4 @@
-require('protractor');
+var protractor = require('protractor');
 var rimraf = require('rimraf');
 var fs = require('fs');
 
@@ -8,9 +8,34 @@ const openUrl = (url) => {
     logs['actions'].push({ 
         time: new Date(), 
         action: 'URL opened', 
-        value: url
+        value: url,
+        x: null,
+        y: null
     });
-    return browser.get(url);
+    return protractor.browser.get(url);
+};
+
+const $ = (selector) => {
+    return new Element(selector);  
+};
+
+class Element {
+    constructor(selector){
+        this.element = protractor.$(selector);
+    };
+
+    click() {
+        this.element.getLocation().then(location => {
+            logs['actions'].push({ 
+                time: new Date(), 
+                action: 'Element clicked', 
+                value: null,
+                x: location.x,
+                y: location.y
+            });
+        });
+        return this.element.click();
+    };
 };
 
 const saveLogs = () => {
@@ -20,4 +45,4 @@ const saveLogs = () => {
     });
 };
 
-module.exports = { openUrl, saveLogs };
+module.exports = { $, openUrl, saveLogs, Element };
