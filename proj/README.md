@@ -25,4 +25,5 @@ etc.
 `onComplete: () => { saveLogs(); }`
  
  This will create a `logs/logs.json` file in your directory:
+ 
  ![https://i.imgur.com/cfSIGhm.png](https://i.imgur.com/cfSIGhm.png)
