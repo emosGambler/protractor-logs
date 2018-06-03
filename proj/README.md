@@ -11,9 +11,7 @@ It works the same way as protractor, but will also add logs about these actions.
 3. Use like normally you would:
 
 `public nameInput: ElementFinder;
-
 this.nameInput = $('input[placeholder="Enter a name here"]');
-
 this.nameInput.sendKeys(userName);` 
 
 etc.
@@ -26,4 +24,5 @@ etc.
 
 `onComplete: () => { saveLogs(); }`
  
- This will create a `logs/logs.json` file in your directory
+ This will create a `logs/logs.json` file in your directory:
+ ![https://i.imgur.com/cfSIGhm.png](https://i.imgur.com/cfSIGhm.png)
