@@ -4,6 +4,15 @@ var fs = require('fs');
 
 let logs = { actions: [] };
 
+const ELEMENT_CLEAR_LOG = 'element.clear()';
+const ELEMENT_CLICK_LOG = 'element.click()';
+const ELEMENT_GET_ATTRIBUTE_LOG = 'element.getAttribute()';
+const ELEMENT_GET_TEXT_LOG = 'element.getText()';
+const ELEMENT_IS_DISPLAYED_LOG = 'element.isDisplayed()';
+const ELEMENT_IS_PRESENT_LOG = 'element.isPresent()';
+const ELEMENT_SEND_KEYS_LOG = 'element.sendKeys()';
+const URL_OPENED = 'browser.get()';
+
 class ElementFinder {
     constructor(selector){
         this.element = protractor.$(selector);
@@ -11,28 +20,28 @@ class ElementFinder {
 
     clear() {
         this.element.getLocation().then(location => {
-            addLogs('Element input cleaned', null, location.x, location.y);
+            addLogs(ELEMENT_CLEAR_LOG, null, location.x, location.y);
         });
         return this.element.clear();
     };
 
     click() {
         this.element.getLocation().then(location => {
-            addLogs('Element clicked', null, location.x, location.y);
+            addLogs(ELEMENT_CLICK_LOG, null, location.x, location.y);
         });
         return this.element.click();
     };
 
     getAttribute(attribute) {
         this.element.getLocation().then(location => {
-            addLogs('Reading element attribute', attribute, location.x, location.y);
+            addLogs(ELEMENT_GET_ATTRIBUTE_LOG, attribute, location.x, location.y);
         });
         return this.element.getAttribute(attribute);
     };
 
     getText() {
         this.element.getLocation().then(location => {
-            addLogs('Reading element inner text', null, location.x, location.y);
+            addLogs(ELEMENT_GET_TEXT_LOG, null, location.x, location.y);
         });
         return this.element.getText();
     };
@@ -42,10 +51,10 @@ class ElementFinder {
             this.element.isPresent().then(isPresent => {
                 if (isPresent) {
                     this.element.isDisplayed().then(isDisplayed => {
-                        addLogs('Checking if element is displayed', isDisplayed, location.x, location.y);
+                        addLogs(ELEMENT_IS_DISPLAYED_LOG, isDisplayed, location.x, location.y);
                     });
                 } else {
-                    addLogs('Checking if element is displayed', isPresent, location.x, location.y);
+                    addLogs(ELEMENT_IS_DISPLAYED_LOG, isPresent, location.x, location.y);
                 }
             });
         });
@@ -56,9 +65,9 @@ class ElementFinder {
         this.element.getLocation().then(location => {
             this.element.isPresent().then(isPresent => {
                 if (isPresent) {
-                        addLogs('Checking if element is present', isPresent, location.x, location.y);
+                        addLogs(ELEMENT_IS_PRESENT_LOG, isPresent, location.x, location.y);
                 } else {
-                    addLogs('Checking if element is present', isPresent, location.x, location.y);
+                    addLogs(ELEMENT_IS_PRESENT_LOG, isPresent, location.x, location.y);
                 }
             });
         });
@@ -67,7 +76,7 @@ class ElementFinder {
 
     sendKeys(query) {
         this.element.getLocation().then(location => {
-            addLogs('Keys entered to element', query, location.x, location.y);
+            addLogs(ELEMENT_SEND_KEYS_LOG, query, location.x, location.y);
         });
         return this.element.sendKeys(query);
     };
@@ -104,7 +113,7 @@ const addLogs = (action, value, x, y) => {
 };
 
 const openUrl = (url) => {
-    addLogs('URL opened', url, null, null);
+    addLogs(URL_OPENED, url, null, null);
     return protractor.browser.get(url);
 };
 
