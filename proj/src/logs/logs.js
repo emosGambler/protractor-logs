@@ -4,40 +4,6 @@ var fs = require('fs');
 
 let logs = { actions: [] };
 
-const addLogs = (action, value, x, y) => {
-    logs['actions'].push({ 
-        time: new Date(), 
-        action: action, 
-        value: value,
-        x: x,
-        y: y
-    });
-};
-
-const openUrl = (url) => {
-    addLogs('URL opened', url, null, null);
-    return protractor.browser.get(url);
-};
-
-const $ = (selector) => {
-    return new ElementFinder(selector);  
-};
-
-const $$ = (selector) => {
-    return new ElementArrayFinder(selector);  
-};
-
-class ElementArrayFinder {
-    constructor(selector){
-        this.selector = selector;
-        this.elementArray = protractor.$$(selector);
-    };
-
-    get(index) {
-        return this.elementArray.get(index);
-    };
-};
-
 class ElementFinder {
     constructor(selector){
         this.element = protractor.$(selector);
@@ -71,13 +37,6 @@ class ElementFinder {
         return this.element.getText();
     };
 
-    sendKeys(query) {
-        this.element.getLocation().then(location => {
-            addLogs('Keys entered to element', query, location.x, location.y);
-        });
-        return this.element.sendKeys(query);
-    };
-
     isDisplayed() {
         this.element.getLocation().then(location => {
             this.element.isPresent().then(isPresent => {
@@ -105,6 +64,48 @@ class ElementFinder {
         });
         return this.element.isPresent();
     };
+
+    sendKeys(query) {
+        this.element.getLocation().then(location => {
+            addLogs('Keys entered to element', query, location.x, location.y);
+        });
+        return this.element.sendKeys(query);
+    };
+};
+
+class ElementArrayFinder {
+    constructor(selector){
+        this.selector = selector;
+        this.elementArray = protractor.$$(selector);
+    };
+
+    get(index) {
+        return this.elementArray.get(index);
+    };
+};
+
+
+const $ = (selector) => {
+    return new ElementFinder(selector);  
+};
+
+const $$ = (selector) => {
+    return new ElementArrayFinder(selector);  
+};
+
+const addLogs = (action, value, x, y) => {
+    logs['actions'].push({ 
+        time: new Date(), 
+        action: action, 
+        value: value,
+        x: x,
+        y: y
+    });
+};
+
+const openUrl = (url) => {
+    addLogs('URL opened', url, null, null);
+    return protractor.browser.get(url);
 };
 
 const saveLogs = () => {
@@ -114,4 +115,4 @@ const saveLogs = () => {
     });
 };
 
-module.exports = { $, $$, openUrl, saveLogs, ElementFinder, ElementArrayFinder };
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, };

@@ -2,18 +2,15 @@ import { browser } from 'protractor';
 import { HomePage } from './../pages/examplePage.page';
 import { namesData } from './../data/example.td';
 import * as using from 'jasmine-data-provider';
+import { openUrl } from 'protractor-logs';
 
 const homePage: HomePage = new HomePage();
 
-describe('The Basics - greetings', () => {
+describe('Example', () => {
     beforeAll(() => {
-        homePage.open();
+        openUrl(homePage.url);
     });
     
-    it('should open home page', () => {
-        expect(browser.getCurrentUrl()).toEqual(homePage.url);
-    });
-
     it('should logo be displayed', () => {
         expect(homePage.logo.isDisplayed()).toBe(true);
     });
