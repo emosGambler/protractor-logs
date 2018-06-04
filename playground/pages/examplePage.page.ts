@@ -6,6 +6,7 @@ export class HomePage {
     public nameInput: ElementFinder;
     public greeting: ElementArrayFinder;
     public elemencik: ElementFinder;
+    public logo: ElementFinder;
 
     constructor() {
         this.url = 'https://angularjs.org/';
@@ -13,6 +14,7 @@ export class HomePage {
         this.elemencik = $('img[src="https://ssl.gstatic.com/images/icons/gplus-32.png"]');
         this.greeting = $$('div > h1').get(1);
         this.nameInput = $('input[placeholder="Enter a name here"]');
+        this.logo = $('.hero > h2');
     }
 
     public clickGooglePlusicon(): void {

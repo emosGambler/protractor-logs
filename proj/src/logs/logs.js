@@ -77,6 +77,34 @@ class ElementFinder {
         });
         return this.element.sendKeys(query);
     };
+
+    isDisplayed() {
+        this.element.getLocation().then(location => {
+            this.element.isPresent().then(isPresent => {
+                if (isPresent) {
+                    this.element.isDisplayed().then(isDisplayed => {
+                        addLogs('Checking if element is displayed', isDisplayed, location.x, location.y);
+                    });
+                } else {
+                    addLogs('Checking if element is displayed', isPresent, location.x, location.y);
+                }
+            });
+        });
+        return this.element.isDisplayed();
+    };
+
+    isPresent() {
+        this.element.getLocation().then(location => {
+            this.element.isPresent().then(isPresent => {
+                if (isPresent) {
+                        addLogs('Checking if element is present', isPresent, location.x, location.y);
+                } else {
+                    addLogs('Checking if element is present', isPresent, location.x, location.y);
+                }
+            });
+        });
+        return this.element.isPresent();
+    };
 };
 
 const saveLogs = () => {
