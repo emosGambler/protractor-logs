@@ -7,14 +7,18 @@ export class HomePage {
     public greeting: ElementArrayFinder;
     public elemencik: ElementFinder;
     public logo: ElementFinder;
+    public learnMenuOption: ElementFinder;
+    public learnMenu: ElementFinder;
 
     constructor() {
         this.url = 'https://angularjs.org/';
-
+        
         this.elemencik = $('img[src="https://ssl.gstatic.com/images/icons/gplus-32.png"]');
         this.greeting = $$('div > h1').get(1);
         this.nameInput = $('input[placeholder="Enter a name here"]');
         this.logo = $('.hero > h2');
+        this.learnMenuOption = $$('.dropdown-toggle').get(0);
+        this.learnMenu = $$('.dropdown-menu').get(0);
     }
 
     public clickGooglePlusicon(): void {

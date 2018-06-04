@@ -11,26 +11,41 @@ describe('Example', () => {
         openUrl(homePage.url);
     });
     
-    it('should logo be displayed', () => {
-        expect(homePage.logo.isDisplayed()).toBe(true);
-    });
-
-    it('should logo be present', () => {
-        expect(homePage.logo.isPresent()).toBe(true);
-    });
-
-    it('should type name', () => {
-        homePage.setName('name');
-        expect(homePage.getName()).toEqual('name');
+    it('should element.clear() work', () => {
+        homePage.nameInput.sendKeys('test');
+        expect(homePage.nameInput.getAttribute('value')).toBe('test');
+        
+        homePage.nameInput.clear();
+        expect(homePage.nameInput.getAttribute('value')).toBe('');
     });
     
-    it('should update greetings', () => {
-        expect(homePage.getGreetings()).toEqual('Hello name!');
+    it('should element.click() work', () => {
+        expect(homePage.learnMenu.isDisplayed()).toBe(false);
+        
+        homePage.learnMenuOption.click();
+        expect(homePage.learnMenu.isDisplayed()).toBe(true);
     });
-
-    it('should not fail', () => {
-        homePage.open();
-        homePage.clickGooglePlusicon();
-        expect(browser.driver.getCurrentUrl()).toContain('plus.google.com');
+    
+    it('should element.getAttribute() work', () => {
+        expect(homePage.nameInput.getAttribute('value')).toBe('');
+    });
+    
+    it('should element.getText() work', () => {
+        homePage.nameInput.sendKeys('test');
+        expect(homePage.greeting.getText()).toBe('Hello test!');
+    });
+    
+    it('should element.isDisplayed() work', () => {
+        expect(homePage.logo.isDisplayed()).toBe(true);
+    });
+    
+    it('should element.isPresent() work', () => {
+        expect(homePage.logo.isPresent()).toBe(true);
+    });
+    
+    it('should element.sendKeys() work', () => {
+        homePage.nameInput.clear();
+        homePage.nameInput.sendKeys('test');
+        expect(homePage.nameInput.getAttribute('value')).toBe('test');
     });
 });
