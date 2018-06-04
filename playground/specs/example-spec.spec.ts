@@ -1,10 +1,10 @@
 import { browser } from 'protractor';
-import { HomePage } from './../pages/examplePage.page';
+import { ExamplePage } from './../pages/example.page';
 import { namesData } from './../data/example.td';
 import * as using from 'jasmine-data-provider';
 import { openUrl } from 'protractor-logs';
 
-const homePage: HomePage = new HomePage();
+const homePage: ExamplePage = new ExamplePage();
 
 describe('Example', () => {
     beforeAll(() => {
