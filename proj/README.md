@@ -1,4 +1,4 @@
-# IN PROGRESS
+# IN PROGRESS - do not use in serious projects!
 # How to use it?
 1. `npm install --save protractor-logs` where your package.json is
 
