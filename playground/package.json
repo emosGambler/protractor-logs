@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "beforeTest": "npm run webdriver-update",
     "test": "npm run tsc && protractor tmp/config.js",
-    "webdriver-update": "node node_modules/protractor/bin/webdriver-manager update"
+    "webdriver-update": "node node_modules/protractor/bin/webdriver-manager update",
+    "link": "npm install && cd .. && cd proj && npm install && npm link && cd .. && cd playground && npm link protractor-logs && npm run webdriver-update"
   },
   "author": "Jacek Góraj",
   "license": "ISC",
