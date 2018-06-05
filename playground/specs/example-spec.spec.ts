@@ -1,14 +1,17 @@
+import { AngularPage } from './../pages/angular.page';
 import { browser } from 'protractor';
-import { ExamplePage } from './../pages/example.page';
+import { HomePage } from './../pages/home.page';
 import { namesData } from './../data/example.td';
 import * as using from 'jasmine-data-provider';
-import { openUrl } from 'protractor-logs';
+import { openUrl, setPage } from 'protractor-logs';
 
-const homePage: ExamplePage = new ExamplePage();
+const homePage: HomePage = new HomePage();
+const angularPage: AngularPage = new AngularPage();
 
 describe('Example', () => {
     beforeAll(() => {
         openUrl(homePage.url);
+        setPage('home.page');
     });
     
     it('should element.clear() work', () => {
@@ -24,6 +27,8 @@ describe('Example', () => {
         
         homePage.learnMenuOption.click();
         expect(homePage.learnMenu.isDisplayed()).toBe(true);
+
+        homePage.learnMenu.click();
     });
     
     it('should element.getAttribute() work', () => {
@@ -47,5 +52,25 @@ describe('Example', () => {
         homePage.nameInput.clear();
         homePage.nameInput.sendKeys('test');
         expect(homePage.nameInput.getAttribute('value')).toBe('test');
+    });
+});
+describe('Example of another page', () => {
+    beforeAll(() => {
+        openUrl(angularPage.url);
+        setPage('angular.page');
+    });
+    
+    it('should new page be added to logs', () => {
+        expect(angularPage.title.getText()).toBe('One framework.\nMobile & desktop.');
+    });
+});
+describe('Going back to home page', () => {
+    beforeAll(() => {
+        openUrl(homePage.url);
+        setPage('home.page');
+    });
+    
+    it('should not add any more pages to logs', () => {
+        expect(homePage.logo.isPresent()).toBe(true);
     });
 });
