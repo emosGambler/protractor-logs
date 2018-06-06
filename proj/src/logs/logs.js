@@ -3,6 +3,8 @@ var rimraf = require('rimraf');
 var fs = require('fs');
 
 let logs = { actions: [] };
+let currentPage = 'not specified yet';
+let pageLogs = [];
 
 const ELEMENT_CLEAR_LOG = 'element.clear()';
 const ELEMENT_CLICK_LOG = 'element.click()';
@@ -102,13 +104,14 @@ const $$ = (selector) => {
     return new ElementArrayFinder(selector);  
 };
 
-const addLogs = (action, value, x, y) => {
+const addLogs = (action, value, x, y, page = currentPage) => {
     logs['actions'].push({ 
         time: new Date(), 
         action: action, 
         value: value,
         x: x,
-        y: y
+        y: y,
+        page: page
     });
 };
 
@@ -117,11 +120,37 @@ const openUrl = (url) => {
     return protractor.browser.get(url);
 };
 
+const isPageNew = (pageName) => {
+    let result = true;
+    if (pageLogs.length === 0) {
+        return true;
+    } else {
+        pageLogs.forEach((page) => {
+            if(page.pageName === pageName) {
+                result = false;
+             }
+        });
+        return result;
+    };
+};
+
 const saveLogs = () => {
     const PATH = './logs';
     fs.mkdir(PATH, () => {
-        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(logs));
+        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(logs).replace(/.$/, '').concat(',"pages":').concat(JSON.stringify(pageLogs).concat('}')));
     });
 };
 
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, };
+const setPage = (pageName) => {
+    console.log('\npagename: ', pageName);
+    if (isPageNew(pageName)) {
+        let screenshotPath = 'makeScreenshot()';
+        pageLogs.push({
+            pageName: pageName,
+            screenshotPath: screenshotPath
+        });
+    }
+    currentPage = pageName;
+};
+
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, setPage };
