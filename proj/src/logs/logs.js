@@ -90,6 +90,10 @@ class ElementArrayFinder {
         this.elementArray = protractor.$$(selector);
     };
 
+    $(selector) {
+        return new ElementFinder(selector);  
+    };
+
     get(index) {
 
         const clear = () => {
@@ -151,7 +155,6 @@ class ElementArrayFinder {
             return this.elementArray.get(index).sendKeys(query);
         };
     };
-
 };
 
 
