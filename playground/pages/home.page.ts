@@ -10,6 +10,7 @@ export class HomePage {
     public learnMenu: ElementFinder;
     public nameInput: ElementFinder;
     public tryNewAngularButton: ElementFinder;
+    public todoAddButton: ElementFinder;
 
     constructor() {
         this.url = 'https://angularjs.org/';
@@ -20,5 +21,6 @@ export class HomePage {
         this.learnMenu = $$('.dropdown-menu').get(0);
         this.nameInput = $('input[placeholder="Enter a name here"]');
         this.tryNewAngularButton = $('a[href="http://angular.io"]');
+        this.todoAddButton = $$('input').$('.btn-primary');
     }
 }

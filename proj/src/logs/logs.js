@@ -86,7 +86,6 @@ class ElementFinder {
 
 class ElementArrayFinder {
     constructor(selector){
-        this.selector = selector;
         this.elementArray = protractor.$$(selector);
     };
 
@@ -95,7 +94,6 @@ class ElementArrayFinder {
     };
 
     get(index) {
-
         const clear = () => {
             this.elementArray.get(index).getLocation().then(location => {
                 addLogs(ELEMENT_CLEAR_LOG, null, location.x, location.y);
@@ -132,7 +130,7 @@ class ElementArrayFinder {
                             addLogs(ELEMENT_IS_DISPLAYED_LOG, isDisplayed, location.x, location.y);
                         });
                     } else {
-                        addLogs(ELEMENT_IS_DISPLAYED_LOG, isPresent, location.x, location.y);
+                        addLogs(ELEMENT_IS_DISPLAYED_LOG, false, location.x, location.y);
                     }
                 });
             });

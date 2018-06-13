@@ -53,6 +53,10 @@ describe('Example', () => {
         homePage.nameInput.sendKeys('test');
         expect(homePage.nameInput.getAttribute('value')).toBe('test');
     });
+
+    fit('test', () => {
+        homePage.todoAddButton.click();
+    });
 });
 describe('Example of another page', () => {
     beforeAll(() => {
