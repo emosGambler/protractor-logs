@@ -2,9 +2,11 @@ var protractor = require('protractor');
 var rimraf = require('rimraf');
 var fs = require('fs');
 
-let logs = { actions: [] };
 let currentPage = 'not specified yet';
 let pageLogs = [];
+const currentTime = new Date();
+let currentDate = `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
+const PATH = './logs';
 
 const ELEMENT_CLEAR_LOG = 'element.clear()';
 const ELEMENT_CLICK_LOG = 'element.click()';
@@ -117,14 +119,15 @@ const $$ = (selector) => {
 };
 
 const addLogs = (action, value, x, y, page = currentPage) => {
-    logs['actions'].push({ 
+    let actionLog = { 
         time: new Date(), 
         action: action, 
         value: value,
         x: x,
         y: y,
         page: page
-    });
+    };
+    saveAction(actionLog);
 };
 
 const openUrl = (url) => {
@@ -146,10 +149,37 @@ const isPageNew = (pageName) => {
     };
 };
 
-const saveLogs = () => {
+/*const saveLogs = () => {
     const PATH = './logs';
     fs.mkdir(PATH, () => {
         fs.writeFile(`${PATH}/logs.json`, JSON.stringify(logs).replace(/.$/, '').concat(',"pages":').concat(JSON.stringify(pageLogs).concat('}')));
+    });
+};*/
+
+const saveAction = (log) => {
+    if (fs.existsSync(`${PATH}/logs${currentDate}.json`)) {
+        fs.appendFile(`${PATH}/logs${currentDate}.json`, JSON.stringify(log));
+    } else {
+        fs.mkdir(PATH, () => {
+            fs.appendFile(`${PATH}/logs${currentDate}.json`, JSON.stringify({ actions: [] }));
+            appendAction(log);
+        });
+    }
+};
+
+const appendAction = (log) => {
+    let test = () => {
+        return new Promise((resolve, reject) => {
+            return fs.readFileSync(`${PATH}/logs${currentDate}.json`, (err, data) => {
+                return err ? reject(err) : resolve(data);
+            });
+        });
+    };
+
+    test().then(logs => {
+        console.log('logs: ', logs);
+        logs.actions.push(log);
+        fs.writeFile(`${PATH}/logs${currentDate}.json`, JSON.stringify(logs));
     });
 };
 
@@ -165,4 +195,4 @@ const setPage = (pageName) => {
     currentPage = pageName;
 };
 
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, setPage };
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, setPage };

@@ -1,2 +1,2 @@
-const { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, setPage } = require('./logs/logs');
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, setPage };
+const { $, $$, ElementFinder, ElementArrayFinder, openUrl,  setPage } = require('./logs/logs');
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, setPage };
