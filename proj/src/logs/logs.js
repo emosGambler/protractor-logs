@@ -16,8 +16,16 @@ const ELEMENT_SEND_KEYS_LOG = 'element.sendKeys()';
 const URL_OPENED = 'browser.get()';
 
 class ElementFinder {
-    constructor(selector){
-        this.element = protractor.$(selector);
+    constructor(handler){
+        console.log('typeof handler: ', typeof handler);
+        switch(typeof handler) {
+            case 'string':
+                this.element = protractor.$(handler);
+                break;
+            case 'object': // ElementFinder
+                this.element = handler;
+                break;
+        }
     };
 
     clear() {
@@ -85,8 +93,9 @@ class ElementFinder {
 };
 
 class ElementArrayFinder {
+    
     constructor(selector){
-        this.elementArray = protractor.$$(selector);
+        this.selector = selector;
     };
 
     $(selector) {
@@ -94,64 +103,7 @@ class ElementArrayFinder {
     };
 
     get(index) {
-        const clear = () => {
-            this.elementArray.get(index).getLocation().then(location => {
-                addLogs(ELEMENT_CLEAR_LOG, null, location.x, location.y);
-            });
-            return this.elementArray.get(index).clear();
-        };
-        
-        const click = () => {
-            this.elementArray.get(index).getLocation().then(location => {
-                addLogs(ELEMENT_CLICK_LOG, null, location.x, location.y);
-            });
-            return this.elementArray.get(index).click();
-        };
-
-        const getAttribute = (attribute) => {
-            this.elementArray.get(index).getLocation().then(location => {
-                addLogs(ELEMENT_GET_ATTRIBUTE_LOG, null, location.x, location.y);
-            });
-            return this.elementArray.get(index).getAttribute(attribute);
-        };
-
-        const getText = () => {
-            this.elementArray.get(index).getLocation().then(location => {
-                addLogs(ELEMENT_GET_TEXT_LOG, null, location.x, location.y);
-            });
-            return this.elementArray.get(index).getText();
-        };
-
-        const isDisplayed = () => {
-            this.elementArray.get(index).getLocation().then(location => {
-                this.elementArray.get(index).isPresent().then(isPresent => {
-                    if (isPresent) {
-                        this.elementArray.get(index).isDisplayed().then(isDisplayed => {
-                            addLogs(ELEMENT_IS_DISPLAYED_LOG, isDisplayed, location.x, location.y);
-                        });
-                    } else {
-                        addLogs(ELEMENT_IS_DISPLAYED_LOG, false, location.x, location.y);
-                    }
-                });
-            });
-            return this.elementArray.get(index).isDisplayed();
-        };
-
-        const isPresent = () => {
-            this.elementArray.get(index).getLocation().then(location => {
-                this.elementArray.get(index).isPresent().then(isPresent => {
-                    addLogs(ELEMENT_IS_PRESENT_LOG, isPresent, location.x, location.y);
-                });
-            });
-            return this.elementArray.get(index).isPresent();
-        };
-
-        const sendKeys = (query) => {
-            this.elementArray.get(index).getLocation().then(location => {
-                addLogs(ELEMENT_SEND_KEYS_LOG, null, location.x, location.y);
-            });
-            return this.elementArray.get(index).sendKeys(query);
-        };
+        return new ElementFinder(protractor.$$(this.selector).get(index));
     };
 };
 
