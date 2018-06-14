@@ -201,8 +201,6 @@ const saveLogs = () => {
             };
         });
         // saving file
-        console.log('lines: ', lines);
-        console.log('pages: ', pages);
         lines = lines.map(line => {
             return JSON.parse(line);
         });
