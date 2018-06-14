@@ -149,50 +149,24 @@ const isPageNew = (pageName) => {
     };
 };
 
-/*const saveLogs = () => {
-    const PATH = './logs';
-    fs.mkdir(PATH, () => {
-        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(logs).replace(/.$/, '').concat(',"pages":').concat(JSON.stringify(pageLogs).concat('}')));
-    });
-};*/
-
 const saveAction = (log) => {
-    if (fs.existsSync(`${PATH}/logs${currentDate}.json`)) {
-        fs.appendFile(`${PATH}/logs${currentDate}.json`, JSON.stringify(log));
-    } else {
-        fs.mkdir(PATH, () => {
-            fs.appendFile(`${PATH}/logs${currentDate}.json`, JSON.stringify({ actions: [] }));
-            appendAction(log);
-        });
-    }
+    fs.appendFile(`${PATH}/tmp-logs${currentDate}.json`, `${JSON.stringify(log)}\n`);
 };
 
-const appendAction = (log) => {
-    let test = () => {
-        return new Promise((resolve, reject) => {
-            return fs.readFileSync(`${PATH}/logs${currentDate}.json`, (err, data) => {
-                return err ? reject(err) : resolve(data);
-            });
-        });
-    };
-
-    test().then(logs => {
-        console.log('logs: ', logs);
-        logs.actions.push(log);
-        fs.writeFile(`${PATH}/logs${currentDate}.json`, JSON.stringify(logs));
-    });
-};
-
-const setPage = (pageName) => {
-    console.log('\npagename: ', pageName);
+const savePage = (pageName) => {
     if (isPageNew(pageName)) {
         let screenshotPath = 'makeScreenshot()';
-        pageLogs.push({
-            pageName: pageName,
-            screenshotPath: screenshotPath
-        });
+        let log = { 
+            time: new Date(), 
+            action: 'Page changed', 
+            value: null,
+            x: null,
+            y: null,
+            page: pageName
+        };
+        fs.appendFile(`${PATH}/tmp-logs${currentDate}.json`, `${JSON.stringify(log)}\n`);
     }
     currentPage = pageName;
 };
 
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, setPage };
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage };
