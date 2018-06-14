@@ -1,9 +1,6 @@
 import { AngularPage } from './../pages/angular.page';
-import { browser } from 'protractor';
 import { HomePage } from './../pages/home.page';
-import { namesData } from './../data/example.td';
-import * as using from 'jasmine-data-provider';
-import { openUrl, setPage } from 'protractor-logs';
+import { openUrl, setPage, saveLogs } from 'protractor-logs';
 
 const homePage: HomePage = new HomePage();
 const angularPage: AngularPage = new AngularPage();

@@ -1,4 +1,4 @@
-import { browser, Config } from 'protractor';
+import { Config } from 'protractor';
 import * as JasmineConsoleReporter from 'jasmine-console-reporter';
 import { saveLogs } from 'protractor-logs';
 

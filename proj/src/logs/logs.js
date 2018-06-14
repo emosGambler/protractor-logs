@@ -1,10 +1,15 @@
 var protractor = require('protractor');
-var rimraf = require('rimraf');
 var fs = require('fs');
-
-let logs = { actions: [] };
 let currentPage = 'not specified yet';
-let pageLogs = [];
+let allPagesList = [];
+const currentTime = new Date();
+
+const getCurrentDate = () => {
+    return `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
+};
+
+let currentDate = getCurrentDate();
+const PATH = './logs';
 
 const ELEMENT_CLEAR_LOG = 'element.clear()';
 const ELEMENT_CLICK_LOG = 'element.click()';
@@ -17,7 +22,6 @@ const URL_OPENED = 'browser.get()';
 
 class ElementFinder {
     constructor(handler){
-        console.log('typeof handler: ', typeof handler);
         switch(typeof handler) {
             case 'string':
                 this.element = protractor.$(handler);
@@ -117,14 +121,15 @@ const $$ = (selector) => {
 };
 
 const addLogs = (action, value, x, y, page = currentPage) => {
-    logs['actions'].push({ 
+    let actionLog = { 
         time: new Date(), 
         action: action, 
         value: value,
         x: x,
         y: y,
         page: page
-    });
+    };
+    saveAction(actionLog);
 };
 
 const openUrl = (url) => {
@@ -132,13 +137,13 @@ const openUrl = (url) => {
     return protractor.browser.get(url);
 };
 
-const isPageNew = (pageName) => {
+const isPageNew = (pageName, pagesList) => {
     let result = true;
-    if (pageLogs.length === 0) {
+    if (pagesList.length === 0) {
         return true;
     } else {
-        pageLogs.forEach((page) => {
-            if(page.pageName === pageName) {
+        pagesList.forEach((page) => {
+            if (page === pageName) {
                 result = false;
              }
         });
@@ -146,23 +151,65 @@ const isPageNew = (pageName) => {
     };
 };
 
-const saveLogs = () => {
-    const PATH = './logs';
-    fs.mkdir(PATH, () => {
-        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(logs).replace(/.$/, '').concat(',"pages":').concat(JSON.stringify(pageLogs).concat('}')));
-    });
+const isPageNew2 = (pageName, pagesList) => {
+    let result = true;
+    if (pagesList.length === 0) {
+        return true;
+    } else {
+        pagesList.forEach((page) => {
+            if (JSON.parse(page)['page'] === pageName) {
+                result = false;
+             }
+        });
+        return result;
+    };
 };
 
-const setPage = (pageName) => {
-    console.log('\npagename: ', pageName);
-    if (isPageNew(pageName)) {
-        let screenshotPath = 'makeScreenshot()';
-        pageLogs.push({
-            pageName: pageName,
-            screenshotPath: screenshotPath
-        });
-    }
+const saveAction = (log) => {
+    fs.appendFile(`${PATH}/tmp-logs-${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
+};
+
+const savePage = (pageName) => {
+    if (isPageNew(pageName, allPagesList)) {
+        allPagesList.push(pageName);
+    };
+    let screenshotPath = 'makeScreenshot()';
+    addLogs('Page changed', { screenshot: screenshotPath, resolution: '1000px x 1000px'}, null, null, pageName);
     currentPage = pageName;
 };
 
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, saveLogs, setPage };
+const saveLogs = () => {
+    rawLogs = () => { 
+        return new Promise((resolve, reject) => {
+            return fs.readFile(`${PATH}/tmp-logs-${currentDate}`, 'utf8', (err, data) => {
+                return err ? reject(err) : resolve(data);
+            });
+        });
+    };
+    rawLogs().then((logs) => {
+        let lines = logs.split('\n');
+        let pages = [];
+        lines.splice(lines.length - 1, 1);
+        // get unique pages
+        lines.forEach((line, index) => {
+            let parsedLine = JSON.parse(line);
+            if (parsedLine['action'] === 'Page changed') {
+                if (isPageNew2(parsedLine['page'], pages)) {
+                    pages.push(line);
+                };
+                lines.splice(index, 1);
+            };
+        });
+        // saving file
+        lines = lines.map(line => {
+            return JSON.parse(line);
+        });
+        pages = pages.map(page => {
+            return JSON.parse(page);
+        });
+        let finalLogs = { actions: lines, pages: pages };
+        fs.writeFile(`${PATH}/logs-${currentDate}.json`, JSON.stringify(finalLogs), (err) => { return err; } );
+    });
+};
+
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage, saveLogs };
