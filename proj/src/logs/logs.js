@@ -1,11 +1,15 @@
 var protractor = require('protractor');
-var rimraf = require('rimraf');
 var fs = require('fs');
 
 let currentPage = 'not specified yet';
 let pageLogs = [];
 const currentTime = new Date();
-let currentDate = `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
+
+const getCurrentDate = () => {
+    return `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
+};
+
+let currentDate = getCurrentDate();
 const PATH = './logs';
 
 const ELEMENT_CLEAR_LOG = 'element.clear()';
@@ -19,7 +23,6 @@ const URL_OPENED = 'browser.get()';
 
 class ElementFinder {
     constructor(handler){
-        console.log('typeof handler: ', typeof handler);
         switch(typeof handler) {
             case 'string':
                 this.element = protractor.$(handler);
@@ -150,7 +153,7 @@ const isPageNew = (pageName) => {
 };
 
 const saveAction = (log) => {
-    fs.appendFile(`${PATH}/tmp-logs${currentDate}.json`, `${JSON.stringify(log)}\n`);
+    fs.appendFile(`${PATH}/tmp-logs${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
 };
 
 const savePage = (pageName) => {
@@ -159,14 +162,28 @@ const savePage = (pageName) => {
         let log = { 
             time: new Date(), 
             action: 'Page changed', 
-            value: null,
+            value: { screenshot: screenshotPath, resolution: '1000px x 1000px'},
             x: null,
             y: null,
             page: pageName
         };
-        fs.appendFile(`${PATH}/tmp-logs${currentDate}.json`, `${JSON.stringify(log)}\n`);
+        fs.appendFile(`${PATH}/tmp-logs${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
     }
     currentPage = pageName;
 };
 
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage };
+const saveLogs = () => {
+    rawLogs = () => { 
+        return new Promise((resolve, reject) => {
+            return fs.readFile(`${PATH}/tmp-logs${currentDate}`, 'utf8', (err, data) => {
+                return err ? reject(err) : resolve(data);
+            });
+        });
+    };
+    rawLogs().then(logs => {
+        console.log('logs: ', logs);
+    });
+    currentDate = getCurrentDate();
+};
+
+module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage, saveLogs };

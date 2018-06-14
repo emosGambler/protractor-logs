@@ -1,6 +1,6 @@
 import { AngularPage } from './../pages/angular.page';
 import { HomePage } from './../pages/home.page';
-import { openUrl, setPage } from 'protractor-logs';
+import { openUrl, setPage, saveLogs } from 'protractor-logs';
 
 const homePage: HomePage = new HomePage();
 const angularPage: AngularPage = new AngularPage();
@@ -9,6 +9,10 @@ describe('Example', () => {
     beforeAll(() => {
         openUrl(homePage.url);
         setPage('home.page');
+    });
+
+    afterAll(() => {
+        saveLogs();
     });
     
     it('should element.clear() work', () => {
