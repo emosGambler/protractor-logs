@@ -166,7 +166,7 @@ const isPageNew2 = (pageName, pagesList) => {
 };
 
 const saveAction = (log) => {
-    fs.appendFile(`${PATH}/tmp-logs${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
+    fs.appendFile(`${PATH}/tmp-logs-${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
 };
 
 const savePage = (pageName) => {
@@ -181,7 +181,7 @@ const savePage = (pageName) => {
 const saveLogs = () => {
     rawLogs = () => { 
         return new Promise((resolve, reject) => {
-            return fs.readFile(`${PATH}/tmp-logs${currentDate}`, 'utf8', (err, data) => {
+            return fs.readFile(`${PATH}/tmp-logs-${currentDate}`, 'utf8', (err, data) => {
                 return err ? reject(err) : resolve(data);
             });
         });
@@ -200,8 +200,18 @@ const saveLogs = () => {
                 lines.splice(index, 1);
             };
         });
+        // saving file
+        console.log('lines: ', lines);
+        console.log('pages: ', pages);
+        lines = lines.map(line => {
+            return JSON.parse(line);
+        });
+        pages = pages.map(page => {
+            return JSON.parse(page);
+        });
+        let finalLogs = { actions: lines, pages: pages };
+        fs.writeFile(`${PATH}/logs-${currentDate}.json`, JSON.stringify(finalLogs), (err) => { return err; } );
     });
-    //currentDate = getCurrentDate();
 };
 
 module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage, saveLogs };
