@@ -190,15 +190,16 @@ const saveLogs = () => {
         let lines = logs.split('\n');
         let pages = [];
         lines.splice(lines.length - 1, 1);
-        lines.forEach((line) => {
+        // get unique pages
+        lines.forEach((line, index) => {
             let parsedLine = JSON.parse(line);
             if (parsedLine['action'] === 'Page changed') {
                 if (isPageNew2(parsedLine['page'], pages)) {
                     pages.push(line);
                 };
+                lines.splice(index, 1);
             };
         });
-        console.log('pages: ', pages);
     });
     //currentDate = getCurrentDate();
 };
