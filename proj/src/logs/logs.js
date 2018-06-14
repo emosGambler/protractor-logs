@@ -137,13 +137,27 @@ const openUrl = (url) => {
     return protractor.browser.get(url);
 };
 
-const isPageNew = (pageName) => {
+const isPageNew = (pageName, pagesList) => {
     let result = true;
-    if (allPagesList.length === 0) {
+    if (pagesList.length === 0) {
         return true;
     } else {
-        allPagesList.forEach((page) => {
+        pagesList.forEach((page) => {
             if (page === pageName) {
+                result = false;
+             }
+        });
+        return result;
+    };
+};
+
+const isPageNew2 = (pageName, pagesList) => {
+    let result = true;
+    if (pagesList.length === 0) {
+        return true;
+    } else {
+        pagesList.forEach((page) => {
+            if (JSON.parse(page)['page'] === pageName) {
                 result = false;
              }
         });
@@ -156,7 +170,7 @@ const saveAction = (log) => {
 };
 
 const savePage = (pageName) => {
-    if (isPageNew(pageName)) {
+    if (isPageNew(pageName, allPagesList)) {
         allPagesList.push(pageName);
     };
     let screenshotPath = 'makeScreenshot()';
@@ -173,19 +187,20 @@ const saveLogs = () => {
         });
     };
     rawLogs().then((logs) => {
-        console.log('logs: ', logs);
-        /*let lines = logs.split('\n');
+        let lines = logs.split('\n');
         let pages = [];
         lines.splice(lines.length - 1, 1);
-        console.log('lines: ', lines);
         lines.forEach((line) => {
-            if (JSON.parse(line)['action'] === "Page changed") {
-                pages.push(line);
+            let parsedLine = JSON.parse(line);
+            if (parsedLine['action'] === 'Page changed') {
+                if (isPageNew2(parsedLine['page'], pages)) {
+                    pages.push(line);
+                };
             };
         });
-        console.log('pages: ', pages);*/
+        console.log('pages: ', pages);
     });
-    currentDate = getCurrentDate();
+    //currentDate = getCurrentDate();
 };
 
 module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage, saveLogs };
