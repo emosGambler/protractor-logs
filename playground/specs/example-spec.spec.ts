@@ -10,10 +10,6 @@ describe('Example', () => {
         openUrl(homePage.url);
         setPage('home.page');
     });
-
-    afterAll(() => {
-        saveLogs();
-    });
     
     it('should element.clear() work', () => {
         homePage.nameInput.sendKeys('test');

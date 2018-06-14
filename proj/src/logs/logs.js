@@ -1,8 +1,7 @@
 var protractor = require('protractor');
 var fs = require('fs');
-
 let currentPage = 'not specified yet';
-let pageLogs = [];
+let allPagesList = [];
 const currentTime = new Date();
 
 const getCurrentDate = () => {
@@ -140,11 +139,11 @@ const openUrl = (url) => {
 
 const isPageNew = (pageName) => {
     let result = true;
-    if (pageLogs.length === 0) {
+    if (allPagesList.length === 0) {
         return true;
     } else {
-        pageLogs.forEach((page) => {
-            if(page.pageName === pageName) {
+        allPagesList.forEach((page) => {
+            if (page === pageName) {
                 result = false;
              }
         });
@@ -158,17 +157,10 @@ const saveAction = (log) => {
 
 const savePage = (pageName) => {
     if (isPageNew(pageName)) {
-        let screenshotPath = 'makeScreenshot()';
-        let log = { 
-            time: new Date(), 
-            action: 'Page changed', 
-            value: { screenshot: screenshotPath, resolution: '1000px x 1000px'},
-            x: null,
-            y: null,
-            page: pageName
-        };
-        fs.appendFile(`${PATH}/tmp-logs${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
-    }
+        allPagesList.push(pageName);
+    };
+    let screenshotPath = 'makeScreenshot()';
+    addLogs('Page changed', { screenshot: screenshotPath, resolution: '1000px x 1000px'}, null, null, pageName);
     currentPage = pageName;
 };
 
@@ -180,8 +172,18 @@ const saveLogs = () => {
             });
         });
     };
-    rawLogs().then(logs => {
+    rawLogs().then((logs) => {
         console.log('logs: ', logs);
+        /*let lines = logs.split('\n');
+        let pages = [];
+        lines.splice(lines.length - 1, 1);
+        console.log('lines: ', lines);
+        lines.forEach((line) => {
+            if (JSON.parse(line)['action'] === "Page changed") {
+                pages.push(line);
+            };
+        });
+        console.log('pages: ', pages);*/
     });
     currentDate = getCurrentDate();
 };
