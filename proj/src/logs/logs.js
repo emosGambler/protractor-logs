@@ -173,9 +173,18 @@ const savePage = (pageName) => {
     if (isPageNew(pageName, allPagesList)) {
         allPagesList.push(pageName);
     };
-    let screenshotPath = 'makeScreenshot()';
+    let screenshotPath = takeScreenshot(pageName);
     addLogs('Page changed', { screenshot: screenshotPath, resolution: '1000px x 1000px'}, null, null, pageName);
     currentPage = pageName;
+};
+
+const takeScreenshot = (pageName) => {
+    protractor.browser.takeScreenshot().then(png => {
+        let stream = fs.createWriteStream(`${PATH}/screenshots/${pageName}.png`);
+        stream.write(new Buffer(png, 'base64'));
+        stream.end();
+    });
+    return `${PATH}/screenshots/${pageName}.png`;
 };
 
 const saveLogs = () => {
