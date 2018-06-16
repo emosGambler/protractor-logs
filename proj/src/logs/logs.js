@@ -174,7 +174,9 @@ const savePage = (pageName) => {
         allPagesList.push(pageName);
     };
     let screenshotPath = takeScreenshot(pageName);
-    addLogs('Page changed', { screenshot: screenshotPath, resolution: '1000px x 1000px'}, null, null, pageName);
+    protractor.browser.driver.manage().window().getSize().then(size => {
+        addLogs('Page changed', { screenshot: screenshotPath, resolution: `${size.width} x ${size.height}`}, null, null, pageName);
+    });
     currentPage = pageName;
 };
 
