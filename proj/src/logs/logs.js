@@ -166,7 +166,7 @@ const isPageNew2 = (pageName, pagesList) => {
 };
 
 const saveAction = (log) => {
-    fs.appendFile(`${PATH}/tmp-logs-${currentDate}`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
+    fs.appendFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
 };
 
 const savePage = (pageName) => {
@@ -189,10 +189,10 @@ const takeScreenshot = (pageName) => {
     return `${PATH}/screenshots/${pageName}.png`;
 };
 
-const saveLogs = () => {
+const saveLogs = (uniqueName = '') => {
     rawLogs = () => { 
         return new Promise((resolve, reject) => {
-            return fs.readFile(`${PATH}/tmp-logs-${currentDate}`, 'utf8', (err, data) => {
+            return fs.readFile(`${PATH}/tmp-logs${uniqueName}`, 'utf8', (err, data) => {
                 return err ? reject(err) : resolve(data);
             });
         });
@@ -219,7 +219,7 @@ const saveLogs = () => {
             return JSON.parse(page);
         });
         let finalLogs = { actions: lines, pages: pages };
-        fs.writeFile(`${PATH}/logs-${currentDate}.json`, JSON.stringify(finalLogs), (err) => { return err; } );
+        fs.writeFile(`${PATH}/logs${uniqueName}.json`, JSON.stringify(finalLogs), (err) => { return err; } );
     });
 };
 
