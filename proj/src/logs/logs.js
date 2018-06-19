@@ -3,6 +3,7 @@ var fs = require('fs');
 let currentPage = 'not specified yet';
 let allPagesList = [];
 const currentTime = new Date();
+let isNewRun = true;
 
 const getCurrentDate = () => {
     return `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
@@ -166,6 +167,11 @@ const isPageNew2 = (pageName, pagesList) => {
 };
 
 const saveAction = (log) => {
+    if (isNewRun) {
+        fs.writeFile(`${PATH}/tmp-logs`, '', (err) => { return err; } );
+        fs.writeFile(`${PATH}/logs.json`, '', (err) => { return err; } );
+        isNewRun = false;
+    }
     fs.appendFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
 };
 
@@ -189,10 +195,10 @@ const takeScreenshot = (pageName) => {
     return `${PATH}/screenshots/${pageName}.png`;
 };
 
-const saveLogs = (uniqueName = '') => {
+const saveLogs = () => {
     rawLogs = () => { 
         return new Promise((resolve, reject) => {
-            return fs.readFile(`${PATH}/tmp-logs${uniqueName}`, 'utf8', (err, data) => {
+            return fs.readFile(`${PATH}/tmp-logs`, 'utf8', (err, data) => {
                 return err ? reject(err) : resolve(data);
             });
         });
@@ -219,7 +225,7 @@ const saveLogs = (uniqueName = '') => {
             return JSON.parse(page);
         });
         let finalLogs = { actions: lines, pages: pages };
-        fs.writeFile(`${PATH}/logs${uniqueName}.json`, JSON.stringify(finalLogs), (err) => { return err; } );
+        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(finalLogs), (err) => { return err; } );
     });
 };
 
