@@ -168,6 +168,12 @@ const isPageNew2 = (pageName, pagesList) => {
 
 const saveAction = (log) => {
     if (isNewRun) {
+        if (!fs.existsSync(`${PATH}`)){
+            fs.mkdirSync(`${PATH}`);
+        };
+        if (!fs.existsSync(`${PATH}/screenshots`)){
+            fs.mkdirSync(`${PATH}/screenshots`);
+        };
         fs.writeFile(`${PATH}/tmp-logs`, '', (err) => { return err; } );
         fs.writeFile(`${PATH}/logs.json`, '', (err) => { return err; } );
         isNewRun = false;
