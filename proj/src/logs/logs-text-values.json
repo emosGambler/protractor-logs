@@ -1,0 +1,10 @@
+{
+    "ELEMENT_CLEAR_LOG": "element.clear()",
+    "ELEMENT_CLICK_LOG": "element.click()",
+    "ELEMENT_GET_ATTRIBUTE_LOG": "element.getAttribute()",
+    "ELEMENT_GET_TEXT_LOG": "element.getText()",
+    "ELEMENT_IS_DISPLAYED_LOG": "element.isDisplayed()",
+    "ELEMENT_IS_PRESENT_LOG": "element.isPresent()",
+    "ELEMENT_SEND_KEYS_LOG": "element.sendKeys()",
+    "URL_OPENED_LOG": "browser.get()"
+}
