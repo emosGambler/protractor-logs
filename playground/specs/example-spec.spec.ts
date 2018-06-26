@@ -51,7 +51,7 @@ describe('Example', () => {
         expect(homePage.nameInput.getAttribute('value')).toBe('test');
     });
 
-    it('test', () => {
+    fit('test', () => {
         homePage.todoAddButton.click();
     });
 });

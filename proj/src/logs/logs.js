@@ -3,12 +3,12 @@ var fs = require('fs');
 var logsTextValues = require('./logs-text-values.json');
 let currentPage = 'not specified yet';
 let allPagesList = [];
-const currentTime = new Date();
 let isNewRun = true;
 const PATH = './logs';
+var fileManager = require('./file-manager');
 
 class ElementFinder {
-    constructor(handler){
+    constructor(handler) {
         switch(typeof handler) {
             case 'string':
                 this.element = protractor.$(handler);
@@ -55,7 +55,7 @@ class ElementFinder {
                         addLogs(logsTextValues.ELEMENT_IS_DISPLAYED_LOG, isDisplayed, location.x, location.y);
                     });
                 } else {
-                    addLogs(logsTextValues.ELEMENT_IS_DISPLAYED_LOG, isPresent, location.x, location.y);
+                    addLogs(logsTextValues.ELEMENT_IS_DISPLAYED_LOG, 'false', location.x, location.y);
                 }
             });
         });
@@ -66,9 +66,9 @@ class ElementFinder {
         this.element.getLocation().then(location => {
             this.element.isPresent().then(isPresent => {
                 if (isPresent) {
-                        addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, isPresent, location.x, location.y);
+                        addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, 'true', location.x, location.y);
                 } else {
-                    addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, isPresent, location.x, location.y);
+                    addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, 'false', location.x, location.y);
                 }
             });
         });
@@ -85,7 +85,7 @@ class ElementFinder {
 
 class ElementArrayFinder {
     
-    constructor(selector){
+    constructor(selector) {
         this.selector = selector;
     };
 
@@ -154,18 +154,16 @@ const isPageNew2 = (pageName, pagesList) => {
 
 const saveAction = (log) => {
     if (isNewRun) {
-        if (!fs.existsSync(`${PATH}`)){
-            fs.mkdirSync(`${PATH}`);
-        };
-        if (!fs.existsSync(`${PATH}/screenshots`)){
-            fs.mkdirSync(`${PATH}/screenshots`);
-        };
-        fs.writeFile(`${PATH}/tmp-logs`, '', (err) => { return err; } );
-        fs.writeFile(`${PATH}/logs.json`, '', (err) => { return err; } );
+        fileManager.createDirIfNotExists(`${PATH}`);
+        fileManager.createDirIfNotExists(`${PATH}/screenshots`);
+        fileManager.cleanFile(`${PATH}/tmp-logs`);
+        fileManager.cleanFile(`${PATH}/logs.json`);
         isNewRun = false;
     }
-    fs.appendFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`, (err) => { return err; } );
+    fileManager.appendToFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`);
 };
+
+// file manager from here 
 
 const savePage = (pageName) => {
     if (isPageNew(pageName, allPagesList)) {
