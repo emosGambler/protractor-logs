@@ -5,12 +5,6 @@ let currentPage = 'not specified yet';
 let allPagesList = [];
 const currentTime = new Date();
 let isNewRun = true;
-/*
-const getCurrentDate = () => {
-    return `${currentTime.getFullYear()}-${currentTime.getMonth() + 1}-${currentTime.getDate()}-${currentTime.getHours()}-${currentTime.getMinutes()}-${currentTime.getSeconds()}-${currentTime.getMilliseconds()}`;
-};
-
-let currentDate = getCurrentDate();*/
 const PATH = './logs';
 
 class ElementFinder {
