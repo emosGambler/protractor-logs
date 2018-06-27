@@ -30,4 +30,11 @@ const cleanFile = (path) => {
     writeToFile(path, '');
 };
 
-module.exports = { appendToFile, cleanFile, createDir, createDirIfNotExists, doesDirExists, writeToFile };
+const getFileContent = (path, encoding = 'utf8') => {
+    return new Promise((resolve, reject) => {
+        return fs.readFile(path, encoding, (err, data) => {
+            return err ? reject(err) : resolve(data);
+        });
+    });
+}
+module.exports = { appendToFile, cleanFile, createDir, createDirIfNotExists, doesDirExists, getFileContent, writeToFile };

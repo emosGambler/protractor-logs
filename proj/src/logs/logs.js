@@ -162,36 +162,21 @@ const savePage = (pageName) => {
 };
 
 const saveLogs = () => {
-    rawLogs = () => { 
-        return new Promise((resolve, reject) => {
-            return fs.readFile(`${PATH}/tmp-logs`, 'utf8', (err, data) => {
-                return err ? reject(err) : resolve(data);
-            });
-        });
-    };
-    rawLogs().then((logs) => {
+    fileManager.getFileContent(`${PATH}/tmp-logs`).then((logs) => {
         let lines = logs.split('\n');
         let pages = [];
-        lines.splice(lines.length - 1, 1);
-        // get unique pages
+        helper.removeLastElementFromList(lines); // because it is an empty one
         lines.forEach((line, index) => {
             let parsedLine = JSON.parse(line);
-            if (parsedLine['action'] === 'Page changed') {
-                if (isPageNew2(parsedLine['page'], pages)) {
+            if (parsedLine['action'] === logsTextValues.PAGE_CHANGED_LOG) {
+                if (helper.isPageNewInList(parsedLine['page'], pages)) {
                     pages.push(line);
                 };
-                lines.splice(index, 1);
+                helper.removeElementFromList(lines, index);
             };
         });
-        // saving file
-        lines = lines.map(line => {
-            return JSON.parse(line);
-        });
-        pages = pages.map(page => {
-            return JSON.parse(page);
-        });
-        let finalLogs = { actions: lines, pages: pages };
-        fs.writeFile(`${PATH}/logs.json`, JSON.stringify(finalLogs), (err) => { return err; } );
+        let result = { actions: helper.convertListToJSON(lines), pages: helper.convertListToJSON(pages) };
+        fileManager.writeToFile(`${PATH}/logs.json`, JSON.stringify(result));
     });
 };
 
