@@ -7,6 +7,7 @@ let isNewRun = true;
 const PATH = './logs';
 var fileManager = require('./file-manager');
 var screenshoter = require('./screenshoter');
+var helper = require('./helper');
 
 class ElementFinder {
     constructor(handler) {
@@ -125,20 +126,6 @@ const openUrl = (url) => {
     return protractor.browser.get(url);
 };
 
-const isPageNew = (pageName, pagesList) => {
-    let result = true;
-    if (pagesList.length === 0) {
-        return true;
-    } else {
-        pagesList.forEach((page) => {
-            if (page === pageName) {
-                result = false;
-             }
-        });
-        return result;
-    };
-};
-
 const isPageNew2 = (pageName, pagesList) => {
     let result = true;
     if (pagesList.length === 0) {
@@ -165,12 +152,11 @@ const saveAction = (log) => {
 };
 
 const savePage = (pageName) => {
-    if (isPageNew(pageName, allPagesList)) {
+    if (helper.isElementPresentInList(pageName, allPagesList)) {
         allPagesList.push(pageName);
     };
-    let screenshotPath = screenshoter.takeScreenshot(`${PATH}/screenshots`, pageName);
-    protractor.browser.driver.manage().window().getSize().then(size => {
-        addLogs('Page changed', { screenshot: screenshotPath, resolution: { width: size.width, height: size.height } }, null, null, pageName);
+    helper.getScreenSize().then(size => {
+        addLogs(logsTextValues.PAGE_CHANGED_LOG, { screenshot: screenshoter.takeScreenshot(`${PATH}/screenshots`, pageName), resolution: { width: size.width, height: size.height } }, null, null, pageName);
     });
     currentPage = pageName;
 };

@@ -6,5 +6,6 @@
     "ELEMENT_IS_DISPLAYED_LOG": "element.isDisplayed()",
     "ELEMENT_IS_PRESENT_LOG": "element.isPresent()",
     "ELEMENT_SEND_KEYS_LOG": "element.sendKeys()",
-    "URL_OPENED_LOG": "browser.get()"
+    "URL_OPENED_LOG": "browser.get()",
+    "PAGE_CHANGED_LOG": "Page changed"
 }
