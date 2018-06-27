@@ -6,6 +6,7 @@ let allPagesList = [];
 let isNewRun = true;
 const PATH = './logs';
 var fileManager = require('./file-manager');
+var screenshoter = require('./screenshoter');
 
 class ElementFinder {
     constructor(handler) {
@@ -163,26 +164,15 @@ const saveAction = (log) => {
     fileManager.appendToFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`);
 };
 
-// file manager from here 
-
 const savePage = (pageName) => {
     if (isPageNew(pageName, allPagesList)) {
         allPagesList.push(pageName);
     };
-    let screenshotPath = takeScreenshot(pageName);
+    let screenshotPath = screenshoter.takeScreenshot(`${PATH}/screenshots`, pageName);
     protractor.browser.driver.manage().window().getSize().then(size => {
         addLogs('Page changed', { screenshot: screenshotPath, resolution: `${size.width} x ${size.height}`}, null, null, pageName);
     });
     currentPage = pageName;
-};
-
-const takeScreenshot = (pageName) => {
-    protractor.browser.takeScreenshot().then(png => {
-        let stream = fs.createWriteStream(`${PATH}/screenshots/${pageName}.png`);
-        stream.write(new Buffer(png, 'base64'));
-        stream.end();
-    });
-    return `${PATH}/screenshots/${pageName}.png`;
 };
 
 const saveLogs = () => {
