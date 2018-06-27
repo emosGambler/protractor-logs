@@ -170,7 +170,7 @@ const savePage = (pageName) => {
     };
     let screenshotPath = screenshoter.takeScreenshot(`${PATH}/screenshots`, pageName);
     protractor.browser.driver.manage().window().getSize().then(size => {
-        addLogs('Page changed', { screenshot: screenshotPath, resolution: `${size.width} x ${size.height}`}, null, null, pageName);
+        addLogs('Page changed', { screenshot: screenshotPath, resolution: { width: size.width, height: size.height } }, null, null, pageName);
     });
     currentPage = pageName;
 };
