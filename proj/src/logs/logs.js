@@ -1,13 +1,13 @@
-var protractor = require('protractor');
-var fs = require('fs');
+var fileManager = require('./file-manager');
+var helper = require('./helper');
 var logsTextValues = require('./logs-text-values.json');
+var protractor = require('protractor');
+var screenshoter = require('./screenshoter');
+
 let currentPage = 'not specified yet';
 let allPagesList = [];
 let isNewRun = true;
 const PATH = './logs';
-var fileManager = require('./file-manager');
-var screenshoter = require('./screenshoter');
-var helper = require('./helper');
 
 class ElementFinder {
     constructor(handler) {
@@ -22,35 +22,35 @@ class ElementFinder {
     };
 
     clear() {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             addLogs(logsTextValues.ELEMENT_CLEAR_LOG, null, location.x, location.y);
         });
         return this.element.clear();
     };
 
     click() {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             addLogs(logsTextValues.ELEMENT_CLICK_LOG, null, location.x, location.y);
         });
         return this.element.click();
     };
 
     getAttribute(attribute) {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             addLogs(logsTextValues.ELEMENT_GET_ATTRIBUTE_LOG, attribute, location.x, location.y);
         });
         return this.element.getAttribute(attribute);
     };
 
     getText() {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             addLogs(logsTextValues.ELEMENT_GET_TEXT_LOG, null, location.x, location.y);
         });
         return this.element.getText();
     };
 
     isDisplayed() {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             this.element.isPresent().then(isPresent => {
                 if (isPresent) {
                     this.element.isDisplayed().then(isDisplayed => {
@@ -65,7 +65,7 @@ class ElementFinder {
     };
 
     isPresent() {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             this.element.isPresent().then(isPresent => {
                 if (isPresent) {
                         addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, 'true', location.x, location.y);
@@ -78,7 +78,7 @@ class ElementFinder {
     };
 
     sendKeys(query) {
-        this.element.getLocation().then(location => {
+        helper.getElementsLocation(this.element).then(location => {
             addLogs(logsTextValues.ELEMENT_SEND_KEYS_LOG, query, location.x, location.y);
         });
         return this.element.sendKeys(query);
@@ -126,20 +126,6 @@ const openUrl = (url) => {
     return protractor.browser.get(url);
 };
 
-const isPageNew2 = (pageName, pagesList) => {
-    let result = true;
-    if (pagesList.length === 0) {
-        return true;
-    } else {
-        pagesList.forEach((page) => {
-            if (JSON.parse(page)['page'] === pageName) {
-                result = false;
-             }
-        });
-        return result;
-    };
-};
-
 const saveAction = (log) => {
     if (isNewRun) {
         fileManager.createDirIfNotExists(`${PATH}`);
@@ -164,8 +150,8 @@ const savePage = (pageName) => {
 const saveLogs = () => {
     fileManager.getFileContent(`${PATH}/tmp-logs`).then((logs) => {
         let lines = logs.split('\n');
-        let pages = [];
         helper.removeLastElementFromList(lines); // because it is an empty one
+        let pages = [];
         lines.forEach((line, index) => {
             let parsedLine = JSON.parse(line);
             if (parsedLine['action'] === logsTextValues.PAGE_CHANGED_LOG) {
