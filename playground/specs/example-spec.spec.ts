@@ -65,7 +65,7 @@ describe('Example of another page', () => {
         expect(angularPage.title.getText()).toBe('One framework.\nMobile & desktop.');
     });
 });
-describe('Going back to home page', () => {
+fdescribe('Going back to home page', () => {
     beforeAll(() => {
         openUrl(homePage.url);
         setPage('home.page');
@@ -73,5 +73,14 @@ describe('Going back to home page', () => {
     
     it('should not add any more pages to logs', () => {
         expect(homePage.logo.isPresent()).toBe(true);
+    });
+    
+    it('should each() works', () => {
+        homePage.variousButtons.each((element, index) => {
+            element.getText().then(text => {
+                console.log('text: ', text);
+                console.log('index: ', index);
+            });
+        });
     });
 });

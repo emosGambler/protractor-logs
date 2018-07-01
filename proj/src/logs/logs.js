@@ -98,6 +98,11 @@ class ElementArrayFinder {
     get(index) {
         return new ElementFinder(protractor.$$(this.selector).get(index));
     };
+
+    each(element, index) {
+        let elements = protractor.$$(this.selector);
+        return elements.each(element, index);
+    };
 };
 
 

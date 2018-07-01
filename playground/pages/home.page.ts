@@ -1,4 +1,3 @@
-import { promise } from 'protractor';
 import { $, $$, ElementFinder, ElementArrayFinder } from 'protractor-logs';
 
 export class HomePage {
@@ -11,6 +10,8 @@ export class HomePage {
     public nameInput: ElementFinder;
     public tryNewAngularButton: ElementFinder;
     public todoAddButton: ElementFinder;
+    public variousButtons: ElementArrayFinder;
+
 
     constructor() {
         this.url = 'https://angularjs.org/';
@@ -22,5 +23,6 @@ export class HomePage {
         this.nameInput = $('input[placeholder="Enter a name here"]');
         this.tryNewAngularButton = $('a[href="http://angular.io"]');
         this.todoAddButton = $$('input').get(4);
+        this.variousButtons = $$('.button');
     }
 }
