@@ -75,12 +75,16 @@ fdescribe('Going back to home page', () => {
         expect(homePage.logo.isPresent()).toBe(true);
     });
     
-    it('should each() works', () => {
+    it('should each() work', () => {
         homePage.variousButtons.each((element, index) => {
             element.getText().then(text => {
                 console.log('text: ', text);
                 console.log('index: ', index);
             });
         });
+    });
+    
+    it('should getText() work', () => {
+        expect(homePage.variousButtons.getText()).toEqual(['something']);
     });
 });

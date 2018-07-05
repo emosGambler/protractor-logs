@@ -103,6 +103,11 @@ class ElementArrayFinder {
         let elements = protractor.$$(this.selector);
         return elements.each(element, index);
     };
+    
+    getText() {
+        let elements = protractor.$$(this.selector);
+        return elements.getText();
+    };
 };
 
 
