@@ -9,115 +9,49 @@ let allPagesList = [];
 let isNewRun = true;
 const PATH = './logs';
 
-class ElementFinder {
+class ElementFinder extends protractor.ElementFinder {
+
     constructor(handler) {
         switch(typeof handler) {
             case 'string':
-                this.element = protractor.$(handler);
+                element = protractor.$(handler);
                 break;
             case 'object': // ElementFinder
-                this.element = handler;
+                element = handler;
                 break;
         }
     };
 
     clear() {
-        helper.getElementsLocation(this.element).then(location => {
+        helper.getElementsLocation(element).then(location => {
             addLogs(logsTextValues.ELEMENT_CLEAR_LOG, null, location.x, location.y);
         });
-        return this.element.clear();
+        return super.clear();
     };
 
     click() {
-        helper.getElementsLocation(this.element).then(location => {
+        helper.getElementsLocation(element).then(location => {
             addLogs(logsTextValues.ELEMENT_CLICK_LOG, null, location.x, location.y);
         });
-        return this.element.click();
-    };
-
-    getAttribute(attribute) {
-        helper.getElementsLocation(this.element).then(location => {
-            addLogs(logsTextValues.ELEMENT_GET_ATTRIBUTE_LOG, attribute, location.x, location.y);
-        });
-        return this.element.getAttribute(attribute);
-    };
-
-    getText() {
-        helper.getElementsLocation(this.element).then(location => {
-            addLogs(logsTextValues.ELEMENT_GET_TEXT_LOG, null, location.x, location.y);
-        });
-        return this.element.getText();
-    };
-
-    isDisplayed() {
-        helper.getElementsLocation(this.element).then(location => {
-            this.element.isPresent().then(isPresent => {
-                if (isPresent) {
-                    this.element.isDisplayed().then(isDisplayed => {
-                        addLogs(logsTextValues.ELEMENT_IS_DISPLAYED_LOG, isDisplayed, location.x, location.y);
-                    });
-                } else {
-                    addLogs(logsTextValues.ELEMENT_IS_DISPLAYED_LOG, 'false', location.x, location.y);
-                }
-            });
-        });
-        return this.element.isDisplayed();
-    };
-
-    isPresent() {
-        helper.getElementsLocation(this.element).then(location => {
-            this.element.isPresent().then(isPresent => {
-                if (isPresent) {
-                        addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, 'true', location.x, location.y);
-                } else {
-                    addLogs(logsTextValues.ELEMENT_IS_PRESENT_LOG, 'false', location.x, location.y);
-                }
-            });
-        });
-        return this.element.isPresent();
+        return super.click();
     };
 
     sendKeys(query) {
-        helper.getElementsLocation(this.element).then(location => {
+        helper.getElementsLocation(element).then(location => {
             addLogs(logsTextValues.ELEMENT_SEND_KEYS_LOG, query, location.x, location.y);
         });
-        return this.element.sendKeys(query);
+        return super.sendKeys(query);
     };
 };
 
-class ElementArrayFinder {
-    
-    constructor(selector) {
-        this.selector = selector;
-    };
-
-    $(selector) {
-        return new ElementFinder(selector);  
-    };
-
-    get(index) {
-        return new ElementFinder(protractor.$$(this.selector).get(index));
-    };
-
-    each(element, index) {
-        let elements = protractor.$$(this.selector);
-        return elements.each(element, index);
-    };
-    
-    getText() {
-        let elements = protractor.$$(this.selector);
-        return elements.getText();
-    };
+class ElementArrayFinder extends protractor.ElementArrayFinder{
+    $(selector) { return protractor.ElementFinder; };
+    get(index) { return protractor.ElementFinder(); };
 };
 
+const $ = (search) => protractor.ElementFinder;
 
-const $ = (selector) => {
-    return new ElementFinder(selector);  
-};
-
-const $$ = (selector) => {
-    return new ElementArrayFinder(selector);  
-};
+const $$ = (selector) => protractor.ElementArrayFinder;
 
 const addLogs = (action, value, x, y, page = currentPage) => {
     let actionLog = { 

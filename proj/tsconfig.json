@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "dist",
+      "sourceMap": true
+    },
+    "files": [
+      "./src/logs/logs.ts"
+    ],
+    "include": [
+      "*.ts"
+    ]
+  }
