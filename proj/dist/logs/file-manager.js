@@ -28,10 +28,10 @@ exports.cleanFile = function (path) {
 };
 exports.getFileContent = function (path, encoding) {
     if (encoding === void 0) { encoding = 'utf8'; }
-    return new Promise(function (resolve, reject) {
-        return fs.readFile(path, encoding, function (err, data) {
-            return err ? reject(err) : resolve(data);
-        });
-    });
+    // return new Promise((resolve, reject) => {
+    //     return fs.readFile(path, encoding, (err, data) => {
+    //         return err ? reject(err) : resolve(data);
+    //     });
+    // });
 };
 //# sourceMappingURL=file-manager.js.map

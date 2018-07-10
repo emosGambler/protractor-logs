@@ -1,5 +1,4 @@
-import { promise } from 'protractor';
-import { $, ElementFinder } from 'protractor-logs';
+import { $, ElementFinder } from 'protractor';
 
 export class AngularPage {
     public url: string;

@@ -30,10 +30,10 @@ export const cleanFile = (path) => {
     writeToFile(path, '');
 };
 
-export const getFileContent = (path: string, encoding: string = 'utf8'): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        return fs.readFile(path, encoding, (err, data) => {
-            return err ? reject(err) : resolve(data);
-        });
-    });
+export const getFileContent = (path: string, encoding: string = 'utf8'): void => {
+    // return new Promise((resolve, reject) => {
+    //     return fs.readFile(path, encoding, (err, data) => {
+    //         return err ? reject(err) : resolve(data);
+    //     });
+    // });
 }

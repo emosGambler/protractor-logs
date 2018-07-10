@@ -1,1 +1,2 @@
-export { $, $$, element, ElementFinder, ElementArrayFinder, openUrl, savePage as setPage, saveLogs } from './logs/logs';
+import { testMethod } from './logs/logs';
+testMethod();

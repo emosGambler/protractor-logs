@@ -6,7 +6,8 @@
       "sourceMap": true
     },
     "files": [
-      "./src/logs/logs.ts"
+      "./src/logs/logs.ts",
+      "./src/index.ts"
     ],
     "include": [
       "*.ts"

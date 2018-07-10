@@ -1,6 +1,5 @@
 import { Config } from 'protractor';
 import * as JasmineConsoleReporter from 'jasmine-console-reporter';
-import { saveLogs } from 'protractor-logs';
 
 export let config: Config = {
     baseUrl: 'https://angularjs.org/',
@@ -21,7 +20,7 @@ export let config: Config = {
             activity: false
         }));
     },
-    onComplete: () => {
-        saveLogs();
-    }
+    plugins: [{
+        package: 'protractor-logs'
+    }]
 };

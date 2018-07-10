@@ -1,14 +1,13 @@
 import { AngularPage } from './../pages/angular.page';
 import { HomePage } from './../pages/home.page';
-import { openUrl, setPage, saveLogs } from 'protractor-logs';
+import { browser } from 'protractor';
 
 const homePage: HomePage = new HomePage();
 const angularPage: AngularPage = new AngularPage();
 
 describe('Example', () => {
     beforeAll(() => {
-        openUrl(homePage.url);
-        setPage('home.page');
+        browser.get(homePage.url);
     });
     
     it('should element.clear() work', () => {
@@ -57,8 +56,7 @@ describe('Example', () => {
 });
 describe('Example of another page', () => {
     beforeAll(() => {
-        openUrl(angularPage.url);
-        setPage('angular.page');
+        browser.get(angularPage.url);
     });
     
     it('should new page be added to logs', () => {
@@ -67,8 +65,7 @@ describe('Example of another page', () => {
 });
 describe('Going back to home page', () => {
     beforeAll(() => {
-        openUrl(homePage.url);
-        setPage('home.page');
+        browser.get(homePage.url);
     });
     
     it('should not add any more pages to logs', () => {

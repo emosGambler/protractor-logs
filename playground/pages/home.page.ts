@@ -1,4 +1,4 @@
-import { element, $, $$, ElementFinder, ElementArrayFinder } from 'protractor-logs';
+import { $, $$, ElementFinder, ElementArrayFinder } from 'protractor';
 
 export class HomePage {
     public url: string;

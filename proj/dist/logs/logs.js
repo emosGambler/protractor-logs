@@ -19,6 +19,9 @@ var currentPage = 'not specified yet';
 var allPagesList = [];
 var isNewRun = true;
 var PATH = './logs';
+exports.testMethod = function () {
+    console.log("WORKS OR NOT XDDDDDDDDDD");
+};
 var ElementArrayFinder = /** @class */ (function (_super) {
     __extends(ElementArrayFinder, _super);
     function ElementArrayFinder(browser_, getWebElements, locator_, actionResults_) {
@@ -79,24 +82,23 @@ exports.savePage = function (pageName) {
     });
     currentPage = pageName;
 };
-exports.saveLogs = function () {
-    fileManager.getFileContent(PATH + "/tmp-logs").then(function (logs) {
-        var lines = logs.split('\n');
+/*
+export const saveLogs = () => {
+    fileManager.getFileContent(`${PATH}/tmp-logs`).then((logs) => {
+        let lines = logs.split('\n');
         helper.removeLastElementFromList(lines); // because it is an empty one
-        var pages = [];
-        lines.forEach(function (line, index) {
-            var parsedLine = JSON.parse(line);
+        let pages = [];
+        lines.forEach((line, index) => {
+            let parsedLine = JSON.parse(line);
             if (parsedLine['action'] === logsTextValues.PAGE_CHANGED_LOG) {
                 if (helper.isPageNewInList(parsedLine['page'], pages)) {
                     pages.push(line);
-                }
-                ;
+                };
                 helper.removeElementFromList(lines, index);
-            }
-            ;
+            };
         });
-        var result = { actions: helper.convertListToJSON(lines), pages: helper.convertListToJSON(pages) };
-        fileManager.writeToFile(PATH + "/logs.json", JSON.stringify(result));
+        let result = { actions: helper.convertListToJSON(lines), pages: helper.convertListToJSON(pages) };
+        fileManager.writeToFile(`${PATH}/logs.json`, JSON.stringify(result));
     });
-};
+};*/ 
 //# sourceMappingURL=logs.js.map

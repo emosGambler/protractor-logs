@@ -10,6 +10,10 @@ let allPagesList = [];
 let isNewRun = true;
 const PATH = './logs';
 
+export let testMethod = () => {
+    console.log("WORKS OR NOT XDDDDDDDDDD");
+};
+
 export let element: protractor.ElementHelper;
 export let $: (search: string) => protractor.ElementFinder;
 export let $$: (search: string) => protractor.ElementArrayFinder;
@@ -102,7 +106,7 @@ export const savePage = (pageName) => {
     });
     currentPage = pageName;
 };
-
+/*
 export const saveLogs = () => {
     fileManager.getFileContent(`${PATH}/tmp-logs`).then((logs) => {
         let lines = logs.split('\n');
@@ -120,4 +124,4 @@ export const saveLogs = () => {
         let result = { actions: helper.convertListToJSON(lines), pages: helper.convertListToJSON(pages) };
         fileManager.writeToFile(`${PATH}/logs.json`, JSON.stringify(result));
     });
-};
+};*/
