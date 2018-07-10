@@ -1,0 +1,9 @@
+export const ELEMENT_CLEAR_LOG = "element.clear()";
+export const ELEMENT_CLICK_LOG = "element.click()";
+export const ELEMENT_GET_ATTRIBUTE_LOG = "element.getAttribute()";
+export const ELEMENT_GET_TEXT_LOG = "element.getText()";
+export const ELEMENT_IS_DISPLAYED_LOG = "element.isDisplayed()";
+export const ELEMENT_IS_PRESENT_LOG = "element.isPresent()";
+export const ELEMENT_SEND_KEYS_LOG = "element.sendKeys()";
+export const URL_OPENED_LOG = "browser.get()";
+export const PAGE_CHANGED_LOG = "Page changed"

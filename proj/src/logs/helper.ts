@@ -1,12 +1,12 @@
-var protractor = require('protractor');
+import * as protractor from 'protractor';
 
-const convertListToJSON = (list) => {
+export const convertListToJSON = (list) => {
     return list.map(element => {
         return JSON.parse(element);
     });
 };
 
-const getElementsLocation = (element) => {
+export const getElementsLocation = (element) => {
     return element.getLocation().then(location => {
         return element.getSize().then(size => {
             return {
@@ -17,11 +17,11 @@ const getElementsLocation = (element) => {
     });
 };
 
-const getScreenSize = () => {
+export const getScreenSize = () => {
     return protractor.browser.driver.manage().window().getSize();
 };
 
-const isElementPresentInList = (element, list) => {
+export const isElementPresentInList = (element, list) => {
     let result = true;
     if (list.length === 0) {
         return true;
@@ -35,7 +35,7 @@ const isElementPresentInList = (element, list) => {
     };
 };
 
-const isPageNewInList = (pageName, pagesList) => {
+export const isPageNewInList = (pageName, pagesList) => {
     let result = true;
     if (pagesList.length === 0) {
         return true;
@@ -49,12 +49,10 @@ const isPageNewInList = (pageName, pagesList) => {
     };
 };
 
-const removeLastElementFromList = (lines) => {
+export const removeLastElementFromList = (lines) => {
     return removeElementFromList(lines, lines.length - 1);
 };
 
-const removeElementFromList = (list, index) => {
+export const removeElementFromList = (list, index) => {
     return list.splice(index, 1);
 };
-
-module.exports = { convertListToJSON, getElementsLocation, getScreenSize, isElementPresentInList, isPageNewInList, removeElementFromList, removeLastElementFromList };

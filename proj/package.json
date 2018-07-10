@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "author": "Jacek Góraj",
   "license": "ISC",
-  "scripts":{
+  "scripts": {
     "tsc": "tsc"
   },
   "dependencies": {

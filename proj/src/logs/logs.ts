@@ -1,17 +1,33 @@
-var fileManager = require('./file-manager');
-var helper = require('./helper');
-var logsTextValues = require('./logs-text-values.json');
-var protractor = require('protractor');
-var screenshoter = require('./screenshoter');
+import * as protractor from 'protractor';
+
+import * as fileManager from './file-manager';
+import * as helper from './helper';
+import * as screenshoter from './screenshoter';
+import * as logsTextValues from './logs-text-values';
 
 let currentPage = 'not specified yet';
 let allPagesList = [];
 let isNewRun = true;
 const PATH = './logs';
 
-class ElementFinder extends protractor.ElementFinder {
+export let element: protractor.ElementHelper;
+export let $: (search: string) => protractor.ElementFinder;
+export let $$: (search: string) => protractor.ElementArrayFinder;
 
-    constructor(handler) {
+export class ElementArrayFinder extends protractor.ElementArrayFinder {
+
+    constructor(browser_: protractor.ProtractorBrowser, getWebElements?: () => protractor.promise.Promise<protractor.WebElement[]>, locator_?: any, actionResults_?: protractor.promise.Promise<any>) {
+        super(browser_, getWebElements, locator_, actionResults_);
+    };
+};
+
+export class ElementFinder extends protractor.ElementFinder {
+
+    constructor(browser_: protractor.ProtractorBrowser, elementArrayFinder: protractor.ElementArrayFinder) {
+        super(browser_, elementArrayFinder);
+    };
+    
+    /*constructor(handler) {
         switch(typeof handler) {
             case 'string':
                 element = protractor.$(handler);
@@ -41,17 +57,13 @@ class ElementFinder extends protractor.ElementFinder {
             addLogs(logsTextValues.ELEMENT_SEND_KEYS_LOG, query, location.x, location.y);
         });
         return super.sendKeys(query);
-    };
+    };*/
 };
 
-class ElementArrayFinder extends protractor.ElementArrayFinder{
+/*export class ElementArrayFinder extends protractor.ElementArrayFinder{
     $(selector) { return protractor.ElementFinder; };
-    get(index) { return protractor.ElementFinder(); };
-};
-
-const $ = (search) => protractor.ElementFinder;
-
-const $$ = (selector) => protractor.ElementArrayFinder;
+    get(index: number): any { return ElementFinder; };
+};*/
 
 const addLogs = (action, value, x, y, page = currentPage) => {
     let actionLog = { 
@@ -65,7 +77,7 @@ const addLogs = (action, value, x, y, page = currentPage) => {
     saveAction(actionLog);
 };
 
-const openUrl = (url) => {
+export const openUrl = (url) => {
     addLogs(logsTextValues.URL_OPENED_LOG, url, null, null);
     return protractor.browser.get(url);
 };
@@ -81,7 +93,7 @@ const saveAction = (log) => {
     fileManager.appendToFile(`${PATH}/tmp-logs`, `${JSON.stringify(log)}\n`);
 };
 
-const savePage = (pageName) => {
+export const savePage = (pageName) => {
     if (helper.isElementPresentInList(pageName, allPagesList)) {
         allPagesList.push(pageName);
     };
@@ -91,7 +103,7 @@ const savePage = (pageName) => {
     currentPage = pageName;
 };
 
-const saveLogs = () => {
+export const saveLogs = () => {
     fileManager.getFileContent(`${PATH}/tmp-logs`).then((logs) => {
         let lines = logs.split('\n');
         helper.removeLastElementFromList(lines); // because it is an empty one
@@ -109,5 +121,3 @@ const saveLogs = () => {
         fileManager.writeToFile(`${PATH}/logs.json`, JSON.stringify(result));
     });
 };
-
-module.exports = { $, $$, ElementFinder, ElementArrayFinder, openUrl, savePage, saveLogs };

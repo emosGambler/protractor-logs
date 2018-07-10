@@ -1,6 +1,8 @@
+import { protractor } from 'protractor';
+
 var fs = require('fs');
 
-const takeScreenshot = (path, pageName, format = 'png', encoding = 'base64') => {
+export const takeScreenshot = (path, pageName, format = 'png', encoding = 'base64') => {
     protractor.browser.takeScreenshot().then(png => {
         let stream = fs.createWriteStream(`${path}/${pageName}.${format}`);
         stream.write(new Buffer(png, encoding));
@@ -8,5 +10,3 @@ const takeScreenshot = (path, pageName, format = 'png', encoding = 'base64') => 
     });
     return `${path}/${pageName}.${format}`;
 };
-
-module.exports = { takeScreenshot };

@@ -65,7 +65,7 @@ describe('Example of another page', () => {
         expect(angularPage.title.getText()).toBe('One framework.\nMobile & desktop.');
     });
 });
-fdescribe('Going back to home page', () => {
+describe('Going back to home page', () => {
     beforeAll(() => {
         openUrl(homePage.url);
         setPage('home.page');
@@ -82,9 +82,5 @@ fdescribe('Going back to home page', () => {
                 console.log('index: ', index);
             });
         });
-    });
-    
-    it('should getText() work', () => {
-        expect(homePage.variousButtons.getText()).toEqual(['something']);
     });
 });

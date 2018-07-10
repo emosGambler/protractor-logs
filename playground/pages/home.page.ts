@@ -1,9 +1,9 @@
-import { $, $$, ElementFinder, ElementArrayFinder } from 'protractor-logs';
+import { element, $, $$, ElementFinder, ElementArrayFinder } from 'protractor-logs';
 
 export class HomePage {
     public url: string;
 
-    public greeting: ElementArrayFinder;
+    public greeting: ElementFinder;
     public logo: ElementFinder;
     public learnMenuOption: ElementFinder;
     public learnMenu: ElementFinder;
