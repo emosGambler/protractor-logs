@@ -7,6 +7,9 @@ var myPlugin = {
     },
     onPrepare: function () {
         this.addSuccess({ specName: 'Hello, World!' });
+    },
+    postTest: function () {
+        console.log('WUBBA LUBBA DUB DUB');
     }
 };
 module.exports = myPlugin;

@@ -7,9 +7,12 @@ declare var module: any;
 let myPlugin: ProtractorPlugin = {
   addSuccess(info: {specName: string}) {
     console.log('on success: ' + info.specName);
-  },
-  onPrepare() {
+},
+onPrepare() {
     this.addSuccess({specName: 'Hello, World!'});
+},
+postTest() {
+    console.log('WUBBA LUBBA DUB DUB');
   }
 };
 
