@@ -63,7 +63,7 @@ describe('Example of another page', () => {
         expect(angularPage.title.getText()).toBe('One framework.\nMobile & desktop.');
     });
 });
-describe('Going back to home page', () => {
+fdescribe('Going back to home page', () => {
     beforeAll(() => {
         browser.get(homePage.url);
     });

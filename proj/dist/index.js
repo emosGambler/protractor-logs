@@ -1,5 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var logs_1 = require("./logs/logs");
-logs_1.testMethod();
+// creating a "var module: any" will allow use of module.exports
+var myPlugin = {
+    addSuccess: function (info) {
+        console.log('on success: ' + info.specName);
+    },
+    onPrepare: function () {
+        this.addSuccess({ specName: 'Hello, World!' });
+    }
+};
+module.exports = myPlugin;
 //# sourceMappingURL=index.js.map

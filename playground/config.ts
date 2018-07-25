@@ -23,4 +23,5 @@ export let config: Config = {
     plugins: [{
         package: 'protractor-logs'
     }]
+        //webDriverLogDir: 'logs/'
 };
