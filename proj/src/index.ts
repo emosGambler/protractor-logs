@@ -6,7 +6,14 @@ declare var module: any;
 
 let myPlugin: ProtractorPlugin = {
     onPageLoad(browser: ProtractorBrowser) {
-        browser.executeScript('$("body").on("click", () => { alert("OOOOPS") })');
+        browser.executeScript(`
+            document.getElementsByTagName("body")[0].onclick = something(this);
+            
+            function something(element) {
+                
+            }
+            `);
+            //element.setAttribute("style", "background-color: red");
     }
 };
 

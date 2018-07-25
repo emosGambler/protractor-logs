@@ -54,7 +54,7 @@ describe('Example', () => {
         homePage.todoAddButton.click();
     });
 });
-describe('Example of another page', () => {
+xdescribe('Example of another page', () => {
     beforeAll(() => {
         browser.get(angularPage.url);
     });
