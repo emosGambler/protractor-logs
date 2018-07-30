@@ -29,7 +29,7 @@ let myPlugin: ProtractorPlugin = {
                 function after(target, defaultStyle) {
                     target.setAttribute("style", "background-color: defaultStyle");
                 }
-top
+
                 function sleep(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
                 }
