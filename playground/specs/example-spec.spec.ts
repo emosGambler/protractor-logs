@@ -47,6 +47,7 @@ describe('Example', () => {
     it('should element.sendKeys() work', () => {
         homePage.nameInput.clear();
         homePage.nameInput.sendKeys('test');
+        browser.sleep(5000);
         expect(homePage.nameInput.getAttribute('value')).toBe('test');
     });
 
