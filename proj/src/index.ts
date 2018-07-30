@@ -10,38 +10,36 @@ let myPlugin: ProtractorPlugin = {
                 document.addEventListener('click', function(e) {
                     e = e || window.event;
                     var target = e.target || e.srcElement;
-                    demo(target);
+                    styling = window.getComputedStyle(target).getPropertyValue('background-color');;
+                    demo(target, styling);
                 }, false);
-                
+
                 document.addEventListener('keydown', function(e) {
                     e = e || window.event;
                     var target = e.target || e.srcElement;
                     demo(target);
                 }, false);
 
-                function colorRed(target) {
+                function before(target) {
                     target.setAttribute("style", "background-color: red");
                 }
 
-                function colorBlue(target) {
-                    target.setAttribute("style", "background-color: blue");
+                function after(target, defaultStyle) {
+                    target.setAttribute("style", "background-color: defaultStyle");
                 }
-
+top
                 function sleep(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
                 }
             
-                async function demo(target) {
-                    colorRed(target);
+                async function demo(target, defaultStyle) {
+                    before(target);
                     await sleep(2000);
-                    colorBlue(target);
+                    after(target, defaultStyle);
                 }
 
-                // document.addEventListener('click mousedown mouseup focus blur keydown change mouseup click dblclick mousemove mouseover mouseout mousewheel keydown keyup keypress textInput touchstart touchmove touchend touchcancel resize scroll zoom focus blur select change submit reset', function(e) {
-                //     e = e || window.event;
-                //     var target = e.target || e.srcElement;
-                //     demo(target);
-                // }, false);
+                // ('click mousedown mouseup focus blur keydown change mouseup click dblclick mousemove mouseover mouseout mousewheel keydown keyup keypress textInput touchstart touchmove touchend touchcancel resize scroll zoom focus blur select change submit reset', function(e) {
+
             `);
             //element.setAttribute("style", "background-color: red");
     }
