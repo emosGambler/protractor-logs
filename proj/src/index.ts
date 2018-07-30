@@ -7,28 +7,13 @@ declare var module: any;
 let myPlugin: ProtractorPlugin = {
     onPageLoad(browser: ProtractorBrowser) {
         browser.executeScript(`
-        document.addEventListener('click', function(e) {
-            e = e || window.event;
-            var target = e.target || e.srcElement;
-            target.setAttribute("style", "background-color: red");  
-        }, false);
-            
-            `);
-            //element.setAttribute("style", "background-color: red");
+            document.addEventListener('click', function(e) {
+                e = e || window.event;
+                var target = e.target || e.srcElement;
+                target.setAttribute("style", "color: Blue; border: 2px solid blue;");   
+            }, false);
+        `);
     }
 };
 
 module.exports = myPlugin;
-
-// document.addEventListener('click'), function(e) {
-//     e = e || window.event;
-//     var target = e.target || e.srcElement,
-//         text = target.textContent
-// }
-
-
-// document.getElementsByTagName("body")[0].onclick = something;
-            
-//             function something() {
-//                 this.setAttribute("style", "background-color: red");
-//             }

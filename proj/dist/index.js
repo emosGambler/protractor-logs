@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // creating a "var module: any" will allow use of module.exports
 var myPlugin = {
     onPageLoad: function (browser) {
-        browser.executeScript("\n        document.addEventListener('click', function(e) {\n            e = e || window.event;\n            var target = e.target || e.srcElement;\n            target.setAttribute(\"style\", \"background-color: red\");  \n        }, false);\n            \n            ");
+        browser.executeScript("\n        document.addEventListener('click', function(e) {\n            e = e || window.event;\n            var target = e.target || e.srcElement;\n            target.setAttribute(\"style\", \"color: Red; border: 2px solid red;\");   \n        }, false);\n            \n            ");
         //element.setAttribute("style", "background-color: red");
     }
 };
