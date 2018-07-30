@@ -7,15 +7,14 @@ declare var module: any;
 let myPlugin: ProtractorPlugin = {
     onPageLoad(browser: ProtractorBrowser) {
         browser.executeScript(`
-            document.getElementsByTagName("body")[0].onclick = something(this);
+            document.getElementsByTagName("body")[0].onclick = something;
             
-            function something(element) {
-                
+            function something() {
+                this.setAttribute("style", "background-color: red");
             }
             `);
             //element.setAttribute("style", "background-color: red");
     }
 };
-
 
 module.exports = myPlugin;
