@@ -7,6 +7,8 @@ declare var module: any;
 let myPlugin: ProtractorPlugin = {
     onPageLoad(browser: ProtractorBrowser) {
         browser.executeScript(`
+                var focusTime = 500;
+
                 document.addEventListener('click', function(e) {
                     e = e || window.event;
                     var target = e.target || e.srcElement;
@@ -34,7 +36,7 @@ top
             
                 async function demo(target, defaultStyle) {
                     before(target);
-                    await sleep(2000);
+                    await sleep(focusTime);
                     after(target, defaultStyle);
                 }
 
